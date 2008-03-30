@@ -55,8 +55,9 @@ class Gst::Bus
   
   def add_watch(&f)
 
-    callback = JavaGst::Bus::MESSAGE.impl do |*args|
+    callback = JavaGst::Bus::MESSAGE.impl do |*args|      
       m = Gst::Message.new(args)
+      
       f.call(m)
     end
     
@@ -88,6 +89,17 @@ class Gst::Message
     raise 'Not yet implemented!'
   end
   
+end
+
+class Gst::MessageType
+  
+  def self.all
+    JavaGst::MessageType.constants.grep(/^[A-Z]*$/)
+  end
+
+  Gst::MessageType.all.each do |type|
+    const_set type, Gst::MessageType.new
+  end
 end
 
 class Gst::Element
