@@ -1,8 +1,23 @@
-require 'rubygems'
-require 'hoe'
-require './lib/jruby_gst.rb'
+# Look in the tasks/setup.rb file for the various options that can be
+# configured in this Rakefile. The .rake files in the tasks directory
+# are where the options are used.
 
-Hoe.new('jruby_gst', JrubyGst::VERSION) do |p|
- p.rubyforge_name = 'jruby_gst' # if different than lowercase project name
- p.developer('LeonB', 'leon@tim-online.nl')
-end
+load 'tasks/setup.rb'
+
+ensure_in_path 'lib'
+require 'jruby_gst'
+
+task :default => 'spec:run'
+
+PROJ.name = 'jruby_gst'
+PROJ.authors = 'LeonB'
+PROJ.email = 'leon@tim-online.nl'
+PROJ.url = 'www.vanutsteen.nl'
+PROJ.rubyforge_name = 'jruby_gst'
+#PROJ.dependencies = ['json']  
+PROJ.version = File.read 'Version.txt'
+PROJ.exclude = %w(.git pkg nbproject)  
+
+PROJ.spec_opts << '--color'
+
+# EOF
