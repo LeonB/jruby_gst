@@ -1,8 +1,8 @@
-# 
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
- 
+require 'rubygems'
+require 'hoe'
+require './lib/jruby_gst.rb'
 
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+Hoe.new('jruby_gst', JrubyGst::VERSION) do |p|
+ p.rubyforge_name = 'jruby_gst' # if different than lowercase project name
+ p.developer('LeonB', 'leon@tim-online.nl')
+end

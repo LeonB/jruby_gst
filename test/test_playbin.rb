@@ -3,8 +3,7 @@
 load '/home/leon/Workspaces/jruby_gst/jruby_gst.rb'
 
 class Player
-  attr_accessor :playlist
-  attr_accessor :playbin
+  attr_accessor :playlist, :playbin, :current_track
   
   def initialize
     Gst.init('rmpd')
@@ -13,7 +12,7 @@ class Player
     playbin.bus.connect(Gst::MessageType::EOS) do |message|
       #playbin.state = Gst
       playbin.state = Gst::State::NULL
-      self.play_next_song()
+      self.play_next_track
       print "#{message.inspect}\n"
     end
     
@@ -32,19 +31,22 @@ class Player
   end
   
   def play
-    #if !playbin.playing?
-      play_next_song
-    #end
+    (playbin.paused?) ? playbin.play : play_track(0)
   end
   
-  def play_next_song
-    if playlist.length > 0
-      f = self.playlist.shift
-      self.playbin.file = f;
-      playbin.play()
-    else
-      self.stop()
-    end
+  def play_track(n)
+      unless playlist.empty?
+        self.current_track = playlist[n].to_s
+        self.playbin.file = playlist[n]
+        self.playbin.play
+        playlist.delete_at(n)
+      else 
+        self.stop()
+      end
+  end
+  
+  def play_next_track
+    play_track(0)
   end
   
   def pause
@@ -52,6 +54,7 @@ class Player
   end
   
   def stop
+    self.current_track = nil
     playbin.stop
     Gst.quit() #If you wanna quit
     Gst.deinit()
@@ -61,3 +64,9 @@ end
 #Now play!
 p = Player.new
 p.play
+
+while p.current_track do
+  print "waiting...\n"
+  print "#{p.current_track}\n"
+  sleep 2
+end

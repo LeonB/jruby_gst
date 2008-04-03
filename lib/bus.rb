@@ -2,10 +2,11 @@ class Gst::Bus
   attr_accessor :java_bus
   
   def initialize(pipeline)
-    self.java_bus = pipeline.java_pipeline.get_bus()
+    self.java_bus = pipeline.java_element.get_bus()
   end
   
   #TODO: review if this is smart to do! I don't think so, but I don't know a better/other way
+  #TODO: how 'bout multiple callbacks? 5 minutes later: wait a minute.... doesn't gstreamer-java doesn't take care of that?
   def connect(*options, &f)
     
     if options.is_a? Array
@@ -25,7 +26,7 @@ class Gst::Bus
     options.reverse_merge! :method => nil, :type => 'MESSAGE'
     
     #Create a gstreamer_java message type
-    message_type = eval("JavaGst::Bus::#{options[:type].to_s}")
+    message_type = options[:type].to_java
 
     callback = message_type.impl do |*args|      
       m = Gst::Message.new(args)

@@ -1,0 +1,7 @@
+=== 0.0.0 / 2008-02-22
+
+* Started with development
+
+=== 0.0.1 / 2008-04-03
+
+* Version 0.0.1 released!

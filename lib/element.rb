@@ -3,7 +3,7 @@ class Gst::Element
   
   def initialize(factory_name, name)
     #TODO: based on the factory_name create a specific objet? For example filesrc?
-    raise 'Gst.init must be called before creating an element!' if JavaGst::Gst.get_main_context.nil?
+    raise 'Gst.init must be called before creating an element!' if not Gst.initialized?
     
     self.java_element = JavaGst::ElementFactory.make(factory_name, name)
   end

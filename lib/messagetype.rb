@@ -1,4 +1,6 @@
 class Gst::MessageType
+  #The types are now: ["LATENCY", "APPLICATION", "BUFFERING", "UNKNOWN", "EOS", "ELEMENT", "SIGNALS", "ERROR", "INFO", "DURATION", "TAG", "ANY", "WARNING", "MESSAGE"]
+  
   attr_accessor :type
   
   def self.all
@@ -12,6 +14,10 @@ class Gst::MessageType
   
   def to_s
     self.type.to_s
+  end
+  
+  def to_java
+    eval("JavaGst::Bus::#{type.to_s}")
   end
 
   Gst::MessageType.all.each do |type|
