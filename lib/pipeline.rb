@@ -32,7 +32,7 @@ class Gst::Pipeline < Gst::Element
   end
   
   def stop
-    java_element.stop
+    self.state = Gst::State::NULL
   end
   
   def stopped?
