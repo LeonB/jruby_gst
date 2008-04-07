@@ -1,6 +1,6 @@
 #!/usr/bin/env jruby
 
-load '/home/leon/Workspaces/jruby_gst/jruby_gst.rb'
+load '/home/leon/Workspaces/jruby_gst/lib/jruby_gst.rb'
 
 class Player
   attr_accessor :playlist, :playbin, :current_track

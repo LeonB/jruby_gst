@@ -2,6 +2,7 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
+Version.txt
 lib/bin.rb
 lib/bus.rb
 lib/element.rb
@@ -14,5 +15,19 @@ lib/monkey.rb
 lib/pipeline.rb
 lib/playbin.rb
 lib/state.rb
+spec/spec_helper.rb
+spec/test_spec.rb
+tasks/ann.rake
+tasks/annotations.rake
+tasks/bones.rake
+tasks/doc.rake
+tasks/gem.rake
+tasks/manifest.rake
+tasks/post_load.rake
+tasks/rubyforge.rake
+tasks/setup.rb
+tasks/spec.rake
+tasks/svn.rake
+tasks/test.rake
 test/test_playbin.rb
 test/test_simple_player.rb

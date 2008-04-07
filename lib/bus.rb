@@ -23,7 +23,7 @@ class Gst::Bus
     end
     
     #Parse the arguments
-    options.reverse_merge! :method => nil, :type => 'MESSAGE'
+    {:method => nil, :type => 'MESSAGE'}.merge!(options)
     
     #Create a gstreamer_java message type
     message_type = options[:type].to_java

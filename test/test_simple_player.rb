@@ -1,4 +1,4 @@
-load '/home/leon/Workspaces/jruby_gst/jruby_gst.rb'
+load '/home/leon/Workspaces/jruby_gst/lib/jruby_gst.rb'
 Gst.init
 pipeline = Gst::Pipeline.new("my_pipeline")
 filesrc = Gst::ElementFactory.make("filesrc", "my_disk_source")

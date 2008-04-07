@@ -1,7 +1,3 @@
-class JrubyGst
-  VERSION = '0.0.1'
-end
-
 include Java
 require '/home/leon/src/gstreamer-java/trunk/dist/gstreamer-java.jar'
 
@@ -27,7 +23,6 @@ required_files = [
 ]
 
 require 'rubygems'
-require 'activesupport'
 required_files.each { |file| load "#{libdir}/#{file}.rb" }
 
 #Some notitios:

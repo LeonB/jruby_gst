@@ -3,7 +3,6 @@
 # are where the options are used.
 
 load 'tasks/setup.rb'
-
 ensure_in_path 'lib'
 require 'jruby_gst'
 
@@ -14,9 +13,9 @@ PROJ.authors = 'LeonB'
 PROJ.email = 'leon@tim-online.nl'
 PROJ.url = 'www.vanutsteen.nl'
 PROJ.rubyforge_name = 'jruby_gst'
-#PROJ.dependencies = ['json']  
+PROJ.dependencies = ['rubygems']  
 PROJ.version = File.read 'Version.txt'
-PROJ.exclude = %w(.git pkg nbproject)  
+PROJ.exclude = %w(.git pkg nbproject doc/)  
 
 PROJ.spec_opts << '--color'
 

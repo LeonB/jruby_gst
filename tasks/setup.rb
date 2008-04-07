@@ -98,13 +98,12 @@ WIN32 = %r/djgpp|(cyg|ms|bcc)win|mingw/ =~ RUBY_PLATFORM unless defined? WIN32
 DEV_NULL = WIN32 ? 'NUL:' : '/dev/null'
 
 def quiet( &block )
-  io = [STDOUT.dup, STDERR.dup]
-  STDOUT.reopen DEV_NULL
-  STDERR.reopen DEV_NULL
+  $stdout.reopen DEV_NULL
+  $stdout.reopen DEV_NULL
   block.call
 ensure
-  STDOUT.reopen io.first
-  STDERR.reopen io.last
+  $stdout.reopen STDOUT
+  $stdout.reopen STDERR
 end
 
 DIFF = if WIN32 then 'diff.exe'
