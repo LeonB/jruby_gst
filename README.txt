@@ -4,11 +4,13 @@
 
 == DESCRIPTION:
 
-FIX (describe your package)
+jruby bindings for gstreamer. These bindings make use of gstreamer-java (http://gstreamer-java.googlecode.com)
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Run on jruby
+* Based on gstreamer 0.10
+* 
 
 == SYNOPSIS:
 
@@ -16,17 +18,19 @@ FIX (describe your package)
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* jruby > 1.1 RC3
+* gstreamer (with good, bad and ugly repositories)
+* gstreamer-java.jar (0.6 included)
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* gem install jruby_gst
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2008 FIX
+Copyright (c) 2008
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
