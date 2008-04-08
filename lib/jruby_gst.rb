@@ -19,6 +19,7 @@ required_files = [
   'messagetype',
   'state',
   'elementfactory',
+  'monkeys',
   #'activesupport'
 ]
 
