@@ -6,116 +6,91 @@ require 'rake/clean'
 require 'fileutils'
 require 'ostruct'
 
-class OpenStruct; undef :gem; end
+PROJ = OpenStruct.new
 
-PROJ = OpenStruct.new(
-  # Project Defaults
-  :name => nil,
-  :summary => nil,
-  :description => nil,
-  :changes => nil,
-  :authors => nil,
-  :email => nil,
-  :url => "\000",
-  :version => ENV['VERSION'] || '0.0.0',
-  :exclude => %w(tmp$ bak$ ~$ CVS .svn/ ^pkg/ ^doc/),
-  :release_name => ENV['RELEASE'],
+PROJ.name = nil
+PROJ.summary = nil
+PROJ.description = nil
+PROJ.changes = nil
+PROJ.authors = nil
+PROJ.email = nil
+PROJ.url = nil
+PROJ.version = ENV['VERSION'] || '0.0.0'
+PROJ.rubyforge_name = nil
+PROJ.exclude = %w(tmp$ bak$ ~$ CVS .svn/ ^pkg/ ^doc/)
+PROJ.release_name = ENV['RELEASE']
+PROJ.history_file = 'History.txt'
+PROJ.manifest_file = 'Manifest.txt'
+PROJ.readme_file = 'README.txt'
 
-  # System Defaults
-  :ruby_opts => %w(-w),
-  :libs => [],
-  :history_file => 'History.txt',
-  :manifest_file => 'Manifest.txt',
-  :readme_file => 'README.txt',
+# Rspec
+PROJ.specs = FileList['spec/**/*_spec.rb']
+PROJ.spec_opts = []
 
-  # Announce
-  :ann => OpenStruct.new(
-    :file => 'announcement.txt',
-    :text => nil,
-    :paragraphs => [],
-    :email => {
-      :from     => nil,
-      :to       => %w(ruby-talk@ruby-lang.org),
-      :server   => 'localhost',
-      :port     => 25,
-      :domain   => ENV['HOSTNAME'],
-      :acct     => nil,
-      :passwd   => nil,
-      :authtype => :plain
-    }
-  ),
+# Test::Unit
+PROJ.tests = FileList['test/**/test_*.rb']
+PROJ.test_file = 'test/all.rb'
+PROJ.test_opts = []
 
-  # Gem Packaging
-  :gem => OpenStruct.new(
-    :dependencies => [],
-    :executables => nil,
-    :extensions => FileList['ext/**/extconf.rb'],
-    :files => nil,
-    :need_tar => true,
-    :need_zip => false,
-    :extras => {}
-  ),
+# Rcov
+PROJ.rcov_dir = 'coverage'
+PROJ.rcov_opts = %w[--sort coverage -T]
+PROJ.rcov_threshold = 90.0
+PROJ.rcov_threshold_exact = false
 
-  # File Annotations
-  :notes => OpenStruct.new(
-    :exclude => %w(^tasks/setup.rb$),
-    :extensions => %w(.txt .rb .erb) << '',
-    :tags => %w(FIXME OPTIMIZE TODO)
-  ),
+# Rdoc
+PROJ.rdoc_opts = []
+PROJ.rdoc_include = %w(^lib/ ^bin/ ^ext/ .txt$)
+PROJ.rdoc_exclude = %w(extconf.rb$)
+PROJ.rdoc_main = nil
+PROJ.rdoc_dir = 'doc'
+PROJ.rdoc_remote_dir = nil
 
-  # Rcov
-  :rcov => OpenStruct.new(
-    :dir => 'coverage',
-    :opts => %w[--sort coverage -T],
-    :threshold => 90.0,
-    :threshold_exact => false
-  ),
+# Extensions
+PROJ.extensions = FileList['ext/**/extconf.rb']
+PROJ.ruby_opts = %w(-w)
+PROJ.libs = []
+%w(lib ext).each {|dir| PROJ.libs << dir if test ?d, dir}
 
-  # Rdoc
-  :rdoc => OpenStruct.new(
-    :opts => [],
-    :include => %w(^lib/ ^bin/ ^ext/ .txt$),
-    :exclude => %w(extconf.rb$),
-    :main => nil,
-    :dir => 'doc',
-    :remote_dir => nil
-  ),
+# Gem Packaging
+PROJ.files = nil
+PROJ.executables = nil
+PROJ.dependencies = []
+PROJ.need_tar = true
+PROJ.need_zip = false
+PROJ.post_install_message = nil
 
-  # Rubyforge
-  :rubyforge => OpenStruct.new(
-    :name => "\000"
-  ),
+# File Annotations
+PROJ.annotation_exclude = %w(^tasks/setup.rb$)
+PROJ.annotation_extensions = %w(.txt .rb .erb) << ''
+PROJ.annotation_tags = %w(FIXME OPTIMIZE TODO)
 
-  # Rspec
-  :spec => OpenStruct.new(
-    :files => FileList['spec/**/*_spec.rb'],
-    :opts => []
-  ),
+# Subversion Repository
+PROJ.svn = false
+PROJ.svn_root = nil
+PROJ.svn_trunk = 'trunk'
+PROJ.svn_tags = 'tags'
+PROJ.svn_branches = 'branches'
 
-  # Subversion Repository
-  :svn => OpenStruct.new(
-    :root => nil,
-    :path => '',
-    :trunk => 'trunk',
-    :tags => 'tags',
-    :branches => 'branches'
-  ),
-
-  # Test::Unit
-  :test => OpenStruct.new(
-    :files => FileList['test/**/test_*.rb'],
-    :file  => 'test/all.rb',
-    :opts  => []
-  )
-)
+# Announce
+PROJ.ann_file = 'announcement.txt'
+PROJ.ann_text = nil
+PROJ.ann_paragraphs = []
+PROJ.ann_email = {
+  :from     => nil,
+  :to       => %w(ruby-talk@ruby-lang.org),
+  :server   => 'localhost',
+  :port     => 25,
+  :domain   => ENV['HOSTNAME'],
+  :acct     => nil,
+  :passwd   => nil,
+  :authtype => :plain
+}
 
 # Load the other rake files in the tasks folder
 rakefiles = Dir.glob('tasks/*.rake').sort
 rakefiles.unshift(rakefiles.delete('tasks/post_load.rake')).compact!
 import(*rakefiles)
-
-# Setup the project libraries
-%w(lib ext).each {|dir| PROJ.libs << dir if test ?d, dir}
 
 # Setup some constants
 WIN32 = %r/djgpp|(cyg|ms|bcc)win|mingw/ =~ RUBY_PLATFORM unless defined? WIN32
@@ -123,14 +98,12 @@ WIN32 = %r/djgpp|(cyg|ms|bcc)win|mingw/ =~ RUBY_PLATFORM unless defined? WIN32
 DEV_NULL = WIN32 ? 'NUL:' : '/dev/null'
 
 def quiet( &block )
-  io = [STDOUT.dup, STDERR.dup]
-  STDOUT.reopen DEV_NULL
-  STDERR.reopen DEV_NULL
+  $stdout.reopen DEV_NULL
+  $stdout.reopen DEV_NULL
   block.call
 ensure
-  STDOUT.reopen io.first
-  STDERR.reopen io.last
-  $stdout, $stderr = STDOUT, STDERR
+  $stdout.reopen STDOUT
+  $stdout.reopen STDERR
 end
 
 DIFF = if WIN32 then 'diff.exe'
@@ -146,7 +119,6 @@ SUDO = if WIN32 then ''
        end
 
 RCOV = WIN32 ? 'rcov.bat' : 'rcov'
-RDOC = WIN32 ? 'rdoc.bat' : 'rdoc'
 GEM  = WIN32 ? 'gem.bat'  : 'gem'
 
 %w(rcov spec/rake/spectask rubyforge bones facets/ansicode).each do |lib|
@@ -157,8 +129,6 @@ GEM  = WIN32 ? 'gem.bat'  : 'gem'
     Object.instance_eval {const_set "HAVE_#{lib.tr('/','_').upcase}", false}
   end
 end
-HAVE_SVN = (Dir.entries(Dir.pwd).include?('.svn') and
-            system("svn --version 2>&1 > #{DEV_NULL}"))
 
 # Reads a file at +path+ and spits out an array of the +paragraphs+
 # specified.
@@ -198,7 +168,7 @@ def depend_on( name, version = nil )
   spec = Gem.source_index.find_name(name).last
   version = spec.version.to_s if version.nil? and !spec.nil?
 
-  PROJ.gem.dependencies << case version
+  PROJ.dependencies << case version
     when nil; [name]
     when %r/^\d/; [name, ">= #{version}"]
     else [name, version] end
@@ -251,16 +221,6 @@ def manifest_files
     files << path
   end
   files.sort!
-end
-
-# We need a "valid" method thtat determines if a string is suitable for use
-# in the gem specification.
-#
-class Object
-  def valid?
-    return !(self.empty? or self == "\000") if self.respond_to?(:to_str)
-    return false
-  end
 end
 
 # EOF

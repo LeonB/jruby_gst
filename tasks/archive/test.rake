@@ -6,19 +6,19 @@ namespace :test do
 
   Rake::TestTask.new(:run) do |t|
     t.libs = PROJ.libs
-    t.test_files = if test(?f, PROJ.test.file) then [PROJ.test.file]
-                   else PROJ.test.files end
+    t.test_files = if test(?f, PROJ.test_file) then [PROJ.test_file]
+                   else PROJ.tests end
     t.ruby_opts += PROJ.ruby_opts
-    t.ruby_opts += PROJ.test.opts
+    t.ruby_opts += PROJ.test_opts
   end
 
   if HAVE_RCOV
     desc 'Run rcov on the unit tests'
     task :rcov => :clobber_rcov do
-      opts = PROJ.rcov.opts.dup << '-o' << PROJ.rcov.dir
+      opts = PROJ.rcov_opts.dup << '-o' << PROJ.rcov_dir
       opts = opts.join(' ')
-      files = if test(?f, PROJ.test.file) then [PROJ.test.file]
-              else PROJ.test.files end
+      files = if test(?f, PROJ.test_file) then [PROJ.test_file]
+              else PROJ.tests end
       files = files.join(' ')
       sh "#{RCOV} #{files} #{opts}"
     end

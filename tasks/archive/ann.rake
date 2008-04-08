@@ -9,16 +9,12 @@ require 'time'
 
 namespace :ann do
 
-  # A prerequisites task that all other tasks depend upon
-  task :prereqs
-
-  file PROJ.ann.file do
-    ann = PROJ.ann
-    puts "Generating #{ann.file}"
-    File.open(ann.file,'w') do |fd|
+  file PROJ.ann_file do
+    puts "Generating #{PROJ.ann_file}"
+    File.open(PROJ.ann_file,'w') do |fd|
       fd.puts("#{PROJ.name} version #{PROJ.version}")
       fd.puts("    by #{Array(PROJ.authors).first}") if PROJ.authors
-      fd.puts("    #{PROJ.url}") if PROJ.url.valid?
+      fd.puts("    #{PROJ.url}") if PROJ.url
       fd.puts("    (the \"#{PROJ.release_name}\" release)") if PROJ.release_name
       fd.puts
       fd.puts("== DESCRIPTION")
@@ -27,24 +23,23 @@ namespace :ann do
       fd.puts
       fd.puts(PROJ.changes.sub(%r/^.*$/, '== CHANGES'))
       fd.puts
-      ann.paragraphs.each do |p|
+      PROJ.ann_paragraphs.each do |p|
         fd.puts "== #{p.upcase}"
         fd.puts
         fd.puts paragraphs_of(PROJ.readme_file, p).join("\n\n")
         fd.puts
       end
-      fd.puts ann.text if ann.text
+      fd.puts PROJ.ann_text if PROJ.ann_text
     end
   end
 
   desc "Create an announcement file"
-  task :announcement => ['ann:prereqs', PROJ.ann.file]
+  task :announcement => PROJ.ann_file
 
   desc "Send an email announcement"
-  task :email => ['ann:prereqs', PROJ.ann.file] do
-    ann = PROJ.ann
-    from = ann.email[:from] || PROJ.email
-    to   = Array(ann.email[:to])
+  task :email => PROJ.ann_file do
+    from = PROJ.ann_email[:from] || PROJ.email
+    to   = Array(PROJ.ann_email[:to])
 
     ### build a mail header for RFC 822
     rfc822msg =  "From: #{from}\n"
@@ -54,11 +49,11 @@ namespace :ann do
     rfc822msg << "\n"
     rfc822msg << "Date: #{Time.new.rfc822}\n"
     rfc822msg << "Message-Id: "
-    rfc822msg << "<#{"%.8f" % Time.now.to_f}@#{ann.email[:domain]}>\n\n"
-    rfc822msg << File.read(ann.file)
+    rfc822msg << "<#{"%.8f" % Time.now.to_f}@#{PROJ.ann_email[:domain]}>\n\n"
+    rfc822msg << File.read(PROJ.ann_file)
 
     params = [:server, :port, :domain, :acct, :passwd, :authtype].map do |key|
-      ann.email[key]
+      PROJ.ann_email[key]
     end
 
     params[3] = PROJ.email if params[3].nil?
@@ -76,6 +71,6 @@ end  # namespace :ann
 desc 'Alias to ann:announcement'
 task :ann => 'ann:announcement'
 
-CLOBBER << PROJ.ann.file
+CLOBBER << PROJ.ann_file
 
 # EOF
