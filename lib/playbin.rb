@@ -1,6 +1,5 @@
 class Gst::Playbin < Gst::Pipeline
   attr_accessor :file
-  #TODO: implement :)
   
   def initialize(name = nil)
     self.java_element = JavaGst::PlayBin.new(name)
@@ -15,5 +14,13 @@ class Gst::Playbin < Gst::Pipeline
     @file = file
     file = java.io.File.new(file)
     self.java_element.set_input_file(file)
+  end
+  
+  def volume
+    self.java_element.get_volume_percent  
+  end
+  
+  def volume=(volume)
+    self.java_element.set_volume_percent(volume)
   end
 end

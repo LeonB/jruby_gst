@@ -3,13 +3,14 @@
 class org.gstreamer::ElementFactory
   def self.make(*args)
     raise 'Gst.init must be called before creating an element!' if not Gst.initialized?
-    super(args)
+    super
   end
 end
 
 class org.gstreamer.elements::PlayBin
-  def self.new(*args)
-    raise 'Gst.init must be called before creating an element!' if not Gst.initialized?
-    super(args)
+#class JavaGst::PlayBin
+  def initialize(*args)
+    #raise 'Gst.init must be called before creating an element!' if not Gst.initialized?
+    super
   end
 end
