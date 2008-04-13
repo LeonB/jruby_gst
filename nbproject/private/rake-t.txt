@@ -1,6 +1,1 @@
-/home/leon/src/jruby/trunk/lib/ruby/site_ruby/1.8/rubygems.rb:379:in `report_activate_error': Could not find RubyGem rake (>= 0) (Gem::LoadError)
-
-	from /home/leon/src/jruby/trunk/lib/ruby/site_ruby/1.8/rubygems.rb:311:in `activate'
-	from /home/leon/src/jruby/trunk/lib/ruby/site_ruby/1.8/rubygems.rb:65:in `active_gem_with_options'
-	from /home/leon/src/jruby/trunk/lib/ruby/site_ruby/1.8/rubygems.rb:50:in `gem'
-	from /home/leon/src/jruby/trunk/bin/rake:18
+(in /home/leon/Workspaces/jruby_gst)

@@ -19,6 +19,9 @@ required_files = [
   'messagetype',
   'state',
   'elementfactory',
+  'caps',
+  'videocomponent',
+  'metaid',
   'monkeys',
   #'activesupport'
 ]
