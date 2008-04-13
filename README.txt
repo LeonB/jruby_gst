@@ -26,6 +26,11 @@ jruby bindings for gstreamer. These bindings make use of gstreamer-java (http://
 
 * gem install jruby_gst
 
+== TODOS:
+
+  #TODO: decide: java native functions in ruby caps or java caps?
+  #TODO: if there's a specific elementclass: initalize it instead of the default Element (inputsrc for example)
+
 == LICENSE:
 
 (The MIT License)
