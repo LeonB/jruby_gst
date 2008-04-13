@@ -8,9 +8,9 @@ jruby bindings for gstreamer. These bindings make use of gstreamer-java (http://
 
 == FEATURES/PROBLEMS:
 
-* Run on jruby
+* Runs on jruby
 * Based on gstreamer 0.10
-* 
+* Very simple API
 
 == SYNOPSIS:
 
