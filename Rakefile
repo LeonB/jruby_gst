@@ -13,7 +13,7 @@ PROJ.authors = 'LeonB'
 PROJ.email = 'leon@tim-online.nl'
 PROJ.url = 'www.vanutsteen.nl'
 PROJ.rubyforge_name = 'jruby_gst'
-PROJ.dependencies = ['rubygems']  
+#PROJ.dependencies = ['rubygems']  
 PROJ.version = File.read 'Version.txt'
 PROJ.exclude = %w(.git pkg nbproject doc/)  
 
