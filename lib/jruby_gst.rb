@@ -1,12 +1,11 @@
 include Java
-require '/home/leon/src/gstreamer-java/trunk/dist/gstreamer-java.jar'
+libdir = File.expand_path(File.dirname(__FILE__))
+require "#{libdir}/../ext/gstreamer-java-0.7.jar"
 
 module JavaGst
   include_package 'org.gstreamer'
   include_package 'org.gstreamer.elements'
 end
-
-libdir = File.expand_path(File.dirname(__FILE__))
 
 required_files = [
   'gst',
@@ -19,6 +18,7 @@ required_files = [
   'messagetype',
   'state',
   'elementfactory',
+  'tag',
   'caps',
   'videocomponent',
   'metaid',

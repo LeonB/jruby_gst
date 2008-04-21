@@ -1,5 +1,4 @@
 class Gst::Pipeline < Gst::Element
-  attr_reader :bus
   
   def initialize(name)
     self.java_element = JavaGst::Pipeline.new(name)
@@ -9,10 +8,6 @@ class Gst::Pipeline < Gst::Element
     java_elements = elements.collect { |element| element.java_element }
     java_elements = java_elements.to_java(:java.org.gstreamer::Element)
     java_element.add_many(java_elements)
-  end
-  
-  def bus
-    @bus ||= Gst::Bus.new(self)
   end
   
   def play
