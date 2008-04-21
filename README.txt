@@ -6,19 +6,28 @@
 
 jruby bindings for gstreamer. These bindings make use of gstreamer-java (http://gstreamer-java.googlecode.com)
 
-== FEATURES/PROBLEMS:
+== FEATURES:
 
 * Runs on jruby
 * Based on gstreamer 0.10
 * Very simple API
 
+== PROBLEMS:
+
+* Implements only a part of the gstreamer api (fixable)
+* No test suite
+
 == SYNOPSIS:
 
   FIX (code sample of usage)
+  include 'jruby_gst'
+  Gst.init()
+  Gst::Pipeline.new().location=('./test.mp3').play()
 
 == REQUIREMENTS:
 
 * jruby > 1.1 RC3
+* JRE
 * gstreamer (with good, bad and ugly repositories)
 * gstreamer-java.jar (0.6 included)
 
@@ -31,6 +40,7 @@ jruby bindings for gstreamer. These bindings make use of gstreamer-java (http://
   #TODO: decide: java native functions in ruby caps or java caps?
   #TODO: if there's a specific elementclass: initalize it instead of the default Element (inputsrc for example)
   #TODO: make a to_java() for arrays
+  #TODO: add + test support for internet streams
 
 == LICENSE:
 
